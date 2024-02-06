@@ -1,6 +1,6 @@
 import pygame
 
-from overflow import SCREEN_SIZE, Player, Game, PLAYER_COUNT
+from overflow import SCREEN_SIZE, PLAYER_COUNT, Player, Game
 
 
 if __name__ == "__main__":
@@ -14,6 +14,7 @@ if __name__ == "__main__":
     ]
     if len(players) != PLAYER_COUNT:
         raise ValueError(f"Player count must be {PLAYER_COUNT}")
+
     game = Game(players)
 
     print("Setup the game")
@@ -24,7 +25,5 @@ if __name__ == "__main__":
                 quit()
         game.visualizer.draw(screen)
         pygame.display.update()
-        if not game.game_state == "END":
-            game.play()
-        else:
-            game.visualizer.draw(screen)
+        pygame.time.delay(100)
+        game.play()
