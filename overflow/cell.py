@@ -29,7 +29,7 @@ class PlayCell(Cell):
 
     def update_to_blocker(self, player) -> None:
         self.player = player
-        self.color = GREY
+        self.color = DARK_GREY
 
     def set_black(self) -> None:
         self.player = None

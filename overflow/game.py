@@ -25,7 +25,6 @@ class Game:
         next_player = self.players.get()
         self.players.put(next_player)
         self.current_player = next_player
-        print(f"Current player: {next_player}")
 
     def play(self) -> None:
         if self.game_state == "SETUP":

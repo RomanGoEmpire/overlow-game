@@ -1,13 +1,13 @@
 import pygame
 
-from . import TOTAL_GRID_SIZE, SQUARE_SIZE, Grid, PlayCell
+from . import TOTAL_GRID_SIZE, SQUARE_SIZE, Grid, PlayCell, CornerCell, Player
 
 
 class Visualizer:
     def __init__(self, grid: Grid):
         self.grid = grid
 
-    def draw(self, screen: pygame.Surface) -> None:
+    def draw(self, screen: pygame.Surface, current_player: Player) -> None:
         for x in range(TOTAL_GRID_SIZE):
             for y in range(TOTAL_GRID_SIZE):
                 cell = self.grid._get_cell(x, y)
@@ -20,6 +20,14 @@ class Visualizer:
                         cell.player.color,
                         (x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE),
                     )
+                elif type(cell) == CornerCell:
+                    outline = SQUARE_SIZE // 3
+                    pygame.draw.rect(
+                        screen,
+                        current_player.color,
+                        (x * SQUARE_SIZE, y * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE),
+                    )
+
                 pygame.draw.rect(
                     screen,
                     color,
