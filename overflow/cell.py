@@ -5,7 +5,7 @@ DARK_GREY = (50, 50, 50)
 
 
 class Cell:
-    def __init__(self, x, y) -> None:
+    def __init__(self, x: int, y: int) -> None:
         self.x = x
         self.y = y
         self.color = WHITE
@@ -27,7 +27,7 @@ class PlayCell(Cell):
     def is_blocked(self) -> bool:
         return self.is_black and self.player
 
-    def block_by_player(self, player) -> None:
+    def update_to_blocker(self, player) -> None:
         self.player = player
         self.color = GREY
 

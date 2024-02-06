@@ -1,6 +1,6 @@
 PLAYER_COUNT = 3
 GRID_SIZE = 5
-TOTAL_GRID_SIZE = GRID_SIZE + 2  # ! Add two for movement tiless
+TOTAL_GRID_SIZE = GRID_SIZE + 2  # ! Add two for movement tiles
 
 SCREEN_SIZE = 800
 rest = SCREEN_SIZE % GRID_SIZE

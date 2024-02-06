@@ -50,50 +50,50 @@ class Grid:
             if GRID_SIZE % 2 == 1:
                 # add a black cell in the middle
                 middle = TOTAL_GRID_SIZE // 2
-                self.get_cell(middle, middle).set_black()
+                self._get_cell(middle, middle).set_black()
             else:
                 # add black cells to each corner
-                self.get_cell(1, 1).set_black()
-                self.get_cell(1, TOTAL_GRID_SIZE - 2).set_black()
-                self.get_cell(TOTAL_GRID_SIZE - 2, 1).set_black()
-                self.get_cell(TOTAL_GRID_SIZE - 2, TOTAL_GRID_SIZE - 2).set_black()
+                self._get_cell(1, 1).set_black()
+                self._get_cell(1, TOTAL_GRID_SIZE - 2).set_black()
+                self._get_cell(TOTAL_GRID_SIZE - 2, 1).set_black()
+                self._get_cell(TOTAL_GRID_SIZE - 2, TOTAL_GRID_SIZE - 2).set_black()
 
-    def get_play_cells(self) -> list[PlayCell]:
+    def _play_cells(self) -> list[PlayCell]:
         return [cell for cell in self.grid if isinstance(cell, PlayCell)]
 
-    def get_move_cells(self) -> list[MoveCell]:
+    def _move_cells(self) -> list[MoveCell]:
         return [cell for cell in self.grid if isinstance(cell, MoveCell)]
 
     def is_game_over(self) -> bool:
         # get set of all players
-        player_cells = self.get_play_cells()
+        player_cells = self._play_cells()
         players = self.remaining_players()
         # if there is only one player left
         return len(players) == 1
 
     def remaining_players(self) -> set:
-        player_cells = self.get_play_cells()
+        player_cells = self._play_cells()
         return {
             cell.player for cell in player_cells if cell.player and not cell.is_black
         }
 
     def is_setup_complete(self) -> bool:
         # get set of all players
-        player_cells = self.get_play_cells()
+        player_cells = self._play_cells()
         empty_cells = [
             cell for cell in player_cells if not cell.player and not cell.is_black
         ]
         return not empty_cells
 
-    def get_cell(self, x, y) -> PlayCell | MoveCell:
+    def _get_cell(self, x, y) -> PlayCell | MoveCell:
         # filter the cell with x and y
         cell = next((cell for cell in self.grid if cell.x == x and cell.y == y), None)
         return cell
 
     def move(self, x, y) -> None:
         self._block_last_move(x, y)
-        player_cells = self.get_play_cells()
-        direction = self.get_direction(x, y)
+        player_cells = self._play_cells()
+        direction = self._get_direction(x, y)
         # Get the row or column of the cells
         if direction in ["UP", "DOWN"]:
             cells = [cell for cell in player_cells if cell.x == x]
@@ -120,7 +120,7 @@ class Grid:
             self.grid.remove(cell)
         self.grid += new_cells
 
-    def get_direction(self, x, y) -> str:
+    def _get_direction(self, x, y) -> str:
         # get the direction of the move
         if y == 0:
             return "DOWN"
@@ -144,15 +144,15 @@ class Grid:
 
     def _unblock_last_move(self) -> None:
         if self.last_block:
-            self.get_cell(*self.last_block).unblock()
+            self._get_cell(*self.last_block).unblock()
             self.last_block = None
 
     def block(self, x, y, player) -> None:
         # remove last block of the player
         self.remove_blocked_cells(player)
         # block the cell
-        cell = self.get_cell(x, y)
-        cell.block_by_player(player)
+        cell = self._get_cell(x, y)
+        cell.update_to_blocker(player)
         # update the blocked cells
         self._unblock_last_move()
         self.update_blocked_cells()
@@ -160,12 +160,12 @@ class Grid:
     def update_blocked_cells(self) -> None:
         x_blocked = set()
         y_blocked = set()
-        for cell in self.get_play_cells():
+        for cell in self._play_cells():
             if cell.is_blocked():
                 x_blocked.add(cell.x)
                 y_blocked.add(cell.y)
 
-        for cell in self.get_move_cells():
+        for cell in self._move_cells():
             if (
                 cell.x in x_blocked
                 or cell.y in y_blocked
@@ -176,6 +176,6 @@ class Grid:
                 cell.unblock()
 
     def remove_blocked_cells(self, player) -> None:
-        for cell in self.get_play_cells():
+        for cell in self._play_cells():
             if cell.is_blocked() and cell.player == player:
                 cell.set_black()

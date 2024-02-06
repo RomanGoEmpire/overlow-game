@@ -40,7 +40,7 @@ class Game:
         else:
             x, y = self.visualizer.get_clicked_pos()
             if x is not None and y is not None:
-                cell = self.grid.get_cell(x, y)
+                cell = self.grid._get_cell(x, y)
                 if type(cell) == PlayCell and not cell.player and not cell.is_black:
                     cell.set_player(self.current_player)
                     self.next_player()
@@ -52,7 +52,7 @@ class Game:
         else:
             x, y = self.visualizer.get_clicked_pos()
             if x is not None and y is not None:
-                cell = self.grid.get_cell(x, y)
+                cell = self.grid._get_cell(x, y)
                 if type(cell) == MoveCell and not cell.is_blocked:
                     self.grid.move(x, y)
                     self.update_players()

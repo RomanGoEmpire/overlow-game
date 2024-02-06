@@ -7,10 +7,10 @@ class Visualizer:
     def __init__(self, grid: Grid):
         self.grid = grid
 
-    def draw(self, screen):
+    def draw(self, screen: pygame.Surface) -> None:
         for x in range(TOTAL_GRID_SIZE):
             for y in range(TOTAL_GRID_SIZE):
-                cell = self.grid.get_cell(x, y)
+                cell = self.grid._get_cell(x, y)
                 color = cell.color
                 outline = 0
                 if type(cell) == PlayCell and cell.is_blocked():
